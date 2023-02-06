@@ -1,8 +1,13 @@
 const menuRoutes = require('express').Router();
 const menuControllers = require('../controllers/menuControllers');
-const authMiddeware = require('../middleware/authMiddleware')
+// const authMiddeware = require('../middleware/authMiddleware')
+// const uploadMiddleware = require('../middleware/uploadMiddleware')
 
-menuRoutes.post('/', authMiddeware.checkLogin, menuControllers.postDataMenu);
+menuRoutes.post('/', 
+
+// authMiddeware.checkLogin,
+// uploadMiddleware,
+ menuControllers.postDataMenu);
 menuRoutes.get('/', menuControllers.getAllData);
 menuRoutes.delete('/:id', menuControllers.deleteData);
 menuRoutes.get('/:id', menuControllers.getDataById);

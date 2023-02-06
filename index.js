@@ -1,6 +1,7 @@
+require('dotenv').config({})
 const express = require('express');
 const app = express();
-const port = 3005;
+const port = 3000;
 const mainRoutes = require('./src/routes')
 
 app.use(express.urlencoded({extended: false}))
