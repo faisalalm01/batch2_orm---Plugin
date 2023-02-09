@@ -7,7 +7,12 @@ module.exports = {
     postDataMenu: (req, res) => {
         const {body} = req
 
-        menu.create(body)
+        const newData = {
+            ...body,
+            Image : req.Image.url,
+        }
+        console.log(newData);
+        menu.create(newData)
         .then((data) => {
             res.status(200).send({
                 msg: 'success post data',

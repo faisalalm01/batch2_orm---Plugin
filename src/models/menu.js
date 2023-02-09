@@ -17,7 +17,8 @@ module.exports = (sequelize, DataTypes) => {
     nama: DataTypes.STRING,
     harga: DataTypes.INTEGER,
     deskripsi: DataTypes.STRING,
-    kategori: DataTypes.STRING
+    kategori: DataTypes.STRING,
+    Image: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'menu',
