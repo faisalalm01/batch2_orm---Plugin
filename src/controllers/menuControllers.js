@@ -1,5 +1,5 @@
-const { where } = require('sequelize');
-const { menu } = require('../models');
+const { menu, kategori, Sequelize } = require('../models');
+const Op = Sequelize.Op
 
 module.exports = {
 
@@ -11,8 +11,13 @@ module.exports = {
             ...body,
             Image : req.Image.url,
         }
-        console.log(newData);
-        menu.create(newData)
+        menu.create(newData, {
+            include: [{
+                model:kategori,
+                as: "kategoris",
+                attributes: ['nama_kategori']
+            }]
+        })
         .then((data) => {
             res.status(200).send({
                 msg: 'success post data',
@@ -30,22 +35,90 @@ module.exports = {
     },
 
     getAllData: (req, res) => {
-        menu.findAll()
-        .then((data) => {
-            res.status(200).send({
-                msg: 'success get All data',
-                status : 200,
-                data
+        const {s} = req.query;
+        console.log(s);
+        if (s === undefined) {
+            menu.findAll({
+                include: [{
+                    model:kategori,
+                    as: "kategoris",
+                    attributes: ['nama_kategori']
+                }]
             })
-        })
-        .catch((error) => {
-            res.status(500).send({
-                msg: 'failed get All data',
-                status : 500,
-                error
+            .then((data) => {
+                res.status(200).send({
+                    msg: 'success get All data',
+                    status : 200,
+                    data
+                })
             })
-        })
-    },
+            .catch((error) => {
+                res.status(500).send({
+                    msg: 'failed get All data',
+                    status : 500,
+                    error
+                })
+            })
+        }else if(s !== undefined){
+            menu.findAll({
+                where:{
+                    [Op.or]: [{nama:{
+                        [Op.like]: '%'+s+'%'
+                    }}, {deskripsi:{
+                        [Op.like]: '%'+s+'%'
+                    }}]
+                },
+                include: [{
+                    model:kategori,
+                    as: "kategoris",
+                    attributes: ['nama_kategori']
+                }]
+            })
+            .then((data) => {
+                res.status(200).send({
+                    msg: 'success get All data',
+                    status : 200,
+                    data
+                })
+            })
+            .catch((error) => {
+                res.status(500).send({
+                    msg: 'failed get All data',
+                    status : 500,
+                    error
+                })
+            })
+        }
+        },
+
+    // search
+    // searchAllData: (req, res) => {
+    //     const {nama} = req.query;
+    //     menu.findAll({
+    //         where: {nama:{
+    //                 [Op.like]: '%'+nama+'%'
+    //             }},
+    //         include: [{
+    //             model:kategori,
+    //             as: "kategoris",
+    //             attributes: ['nama_kategori']
+    //         }]
+    //     })
+    //     .then((data) => {
+    //         res.status(200).send({
+    //             msg: 'success get All data',
+    //             status : 200,
+    //             data
+    //         })
+    //     })
+    //     .catch((error) => {
+    //         res.status(500).send({
+    //             msg: 'failed get All data',
+    //             status : 500,
+    //             error
+    //         })
+    //     })
+    // },
 
     // get data by id
     getDataById: (req, res) => {

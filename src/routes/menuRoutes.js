@@ -10,6 +10,7 @@ menuRoutes.post('/',
 uploadMiddleware, cloudinaryMiddleware,
  menuControllers.postDataMenu);
 menuRoutes.get('/', menuControllers.getAllData);
+// menuRoutes.get('/search', menuControllers.getAllDataMenu)
 menuRoutes.delete('/:id', menuControllers.deleteData);
 menuRoutes.get('/:id', menuControllers.getDataById);
 menuRoutes.put('/:id', menuControllers.updateData);
